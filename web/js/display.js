@@ -13,7 +13,13 @@ function createRow(container, studentName, samples) {
 
       const sampleContainer = document.createElement("div");
       sampleContainer.id = "sample_" + id;
-      sampleContainer.onclick = () => handleClick(sample, false);
+      sampleContainer.onclick = (evt) => {
+         if(evt.ctrlKey) {
+            toggleFlaggedSample(sample);
+         } else {
+            handleClick(sample, false);
+         }
+      }
       sampleContainer.classList.add("sampleContainer");
       if (correct) {
          sampleContainer.style.backgroundColor = "#006";
@@ -62,11 +68,24 @@ function handleClick(sample, doScroll = true) {
 }
 
 function toggleInput() {
+   const inputContainer = document.querySelector('#inputContainer');
    if (inputContainer.style.display == "none") {
       inputContainer.style.display = "block";
       sketchPad.triggerUpdate();
    } else {
       inputContainer.style.display = "none";
+      chart.hideDynamicPoint();
+   }
+}
+
+function toggleOutput() {
+   const confusionContainer = document.querySelector('#confusionContainer');
+
+   if (confusionContainer.style.display == "none") {
+      confusionContainer.style.display = "block";
+      sketchPad.triggerUpdate();
+   } else {
+      confusionContainer.style.display = "none";
       chart.hideDynamicPoint();
    }
 }

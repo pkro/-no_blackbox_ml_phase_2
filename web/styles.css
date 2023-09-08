@@ -83,6 +83,7 @@ button:disabled:hover {
    /**style change*/
    margin: 2px;
    outline: 2px solid #f60;
+   max-width:8%;
    border-radius: 5px;
    text-transform: capitalize;
 }
@@ -128,6 +129,14 @@ input,
    color: black;
 }
 
+#confusionContainer {
+   position: absolute;
+   right: 0px;
+   background-color: white;
+   z-index: 1;
+
+}
+
 #inputContainer {
    position: fixed;
    right: 500px;
@@ -159,4 +168,28 @@ input,
 #statistics {
    font-size: 20px;
    padding: 20px;
+}
+
+.flagged {
+   background-color: red !important;
+}
+
+.infoButton {
+   color: red;
+   cursor: pointer;
+}
+
+.tooltipText {
+   visibility: hidden;
+   color: white;
+   background-color: red;
+   position: absolute;
+   font-size: small;
+   border-radius: 6px;
+   padding: 6px;
+   font-weight: normal;
+}
+
+.infoButton:hover .tooltipText {
+   visibility: visible;
 }
