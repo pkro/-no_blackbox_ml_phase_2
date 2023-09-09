@@ -1,8 +1,8 @@
 const draw = {};
 
-draw.path = (ctx, path, color = "black") => {
+draw.path = (ctx, path, color = "black", thickness=3) => {
    ctx.strokeStyle = color;
-   ctx.lineWidth = 3;
+   ctx.lineWidth = thickness;
    ctx.beginPath();
    ctx.moveTo(...path[0]);
    for (let i = 1; i < path.length; i++) {
@@ -18,6 +18,13 @@ draw.paths = (ctx, paths, color = "black") => {
       draw.path(ctx, path, color);
    }
 };
+
+draw.text = (ctx, text, color = "black", loc = [0, 0], size = 100) => {
+   ctx.font = "bold " + size + "px Courier";
+   ctx.textBaseline = "top";
+   ctx.fillStyle = color;
+   ctx.fillText(text, ...loc);
+}
 
 if (typeof module !== "undefined") {
    module.exports = draw;

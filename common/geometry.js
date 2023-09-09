@@ -1,5 +1,71 @@
-// from: https://gist.github.com/id-ilych/8630fb273e5c5a0b64ca1dc080d68b63
+// adapted from: https://gist.github.com/id-ilych/8630fb273e5c5a0b64ca1dc080d68b63
+if (typeof utils === "undefined") {
+    utils = require("./utils.js");
+}
+
 const geometry = {};
+// Calculates the "roundness" of a polygon by comparing its area with that of a circle
+// having the same perimeter. The roundness is calculated as the ratio of the polygon's
+// area to the circle's area. A value close to 1 indicates that the polygon is more "round".
+geometry.roundness = polygon => {
+    // Calculate the perimeter of the polygon
+    const length = geometry.length(polygon);
+    // Calculate the area of the polygon
+    const area = geometry.area(polygon);
+    // Calculate the radius of the circle that would have the same perimeter as the polygon
+    const R = length / (Math.PI * 2);
+    // Calculate the area of the circle with radius R
+    const circleArea = Math.PI * R ** 2;
+    // Calculate the roundness as the ratio of the polygon's area to the circle's area
+    const roundness = area / circleArea;
+    // Check if roundness is a number (Not a Number would indicate an error)
+    if (isNaN(roundness)) {
+        return 0;
+    }
+    return roundness;
+};
+
+// Calculates the perimeter of a polygon
+geometry.length = polygon => {
+    let length = 0;
+    for (let i = 0; i < polygon.length; i++) {
+        // Loop around to the first point if it's the last index
+        const nextIndex = (i + 1) % polygon.length;
+        // Add the distance between consecutive points to the total length
+        length += utils.distance(polygon[i], polygon[nextIndex]);
+    }
+
+    return length;
+};
+
+// Calculates the area of a triangle given its vertices A, B, and C
+geometry.triangleArea = (A, B, C) => {
+    // Calculate the sides of the triangle using the distance formula
+    const a = utils.distance(B, C);
+    const b = utils.distance(A, C);
+    const c = utils.distance(A, B);
+
+    // Calculate the semi-perimeter
+    const p = (a + b + c) / 2;
+
+    // Calculate the area using Heron's formula
+    const area = Math.sqrt(p * (p - a) * (p - b) * (p - c));
+    return area;
+};
+
+// Calculates the area of a polygon by dividing it into triangles and summing their areas
+geometry.area = polygon => {
+    let area = 0;
+    const A = polygon[0];
+    for (let i = 1; i < polygon.length - 1; i++) {
+        const B = polygon[i];
+        const C = polygon[i + 1];
+        // Add the area of triangle ABC to the total area
+        area += geometry.triangleArea(A, B, C);
+    }
+    return area;
+};
+
 
 // for all the functions below, assume screen coordinates: the x-axis is rightward, the y-axis is downward
 
