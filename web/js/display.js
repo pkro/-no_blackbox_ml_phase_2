@@ -69,7 +69,7 @@ function handleClick(sample, doScroll = true) {
 
 function toggleInput() {
    const inputContainer = document.querySelector('#inputContainer');
-   if (inputContainer.style.display == "none") {
+   if (inputContainer.style.display === "none") {
       inputContainer.style.display = "block";
       sketchPad.triggerUpdate();
    } else {
@@ -79,13 +79,13 @@ function toggleInput() {
 }
 
 function toggleOutput() {
-   const confusionContainer = document.querySelector('#confusionContainer');
-
-   if (confusionContainer.style.display == "none") {
-      confusionContainer.style.display = "block";
-      sketchPad.triggerUpdate();
-   } else {
+   if (networkCanvas.style.display === "") {
+      networkCanvas.style.display = "none";
+      confusionContainer.style.display = "";
+   } else if (confusionContainer.style.display === "") {
       confusionContainer.style.display = "none";
-      chart.hideDynamicPoint();
+   } else {
+      networkCanvas.style.display = "";
+      confusionContainer.style.display = "";
    }
 }

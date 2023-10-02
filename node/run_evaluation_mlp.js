@@ -12,9 +12,26 @@ const {samples: trainingSamples} = JSON.parse(
 );
 
 const mlp = new MLP([
-    5, // 5 features
-    8 // 8 outputs (no hidden layer for now)
-], utils.classes);
+    trainingSamples[0].point.length, // input layers depending on number of features
+        10, // 10 hidden layers
+        utils.classes.length // output layers -> the image classes (clock, house etc.
+    ],
+    utils.classes);
+
+// if we have a last saved model load it so we never get a lower fit than the
+// one we got during the last run (still by chance, so the new model isn't really
+// learning anything from the last, it just uses the data as the current best fitting model
+if (fs.existsSync(constants.MODEL)) {
+    mlp.load(JSON.parse(fs.readFileSync(constants.MODEL)));
+}
+
+mlp.fit(trainingSamples, 5000);
+
+// save best model
+fs.writeFileSync(constants.MODEL, JSON.stringify(mlp));
+fs.writeFileSync(constants.MODEL_JS, `const model = ${JSON.stringify(mlp)};`);
+
+
 
 const {samples: testingSamples} = JSON.parse(
     fs.readFileSync(constants.TESTING)
@@ -41,7 +58,7 @@ console.log(
 console.log("GENERATING DECISION BOUNDARY ...");
 
 const {createCanvas} = require("canvas");
-const imgSize = 100;
+const imgSize = 1000;
 const canvas = createCanvas(imgSize, imgSize);
 const ctx = canvas.getContext("2d");
 
@@ -52,6 +69,7 @@ for (let x = 0; x < canvas.width; x++) {
             point.push(0);
         }
         const {label} = mlp.predict(point);
+
         const color = utils.styles[label].color;
         ctx.fillStyle = color;
         ctx.fillRect(x, y, 1, 1);
