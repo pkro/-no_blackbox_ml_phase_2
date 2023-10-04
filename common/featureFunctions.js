@@ -107,13 +107,19 @@ featureFunctions.getComplexity = (paths) => {
 }
 
 featureFunctions.inUse = [
+   {
+      name: "Pixel Array", function: (paths)=>{
+         // feature vector of 20*20 = 400 dimension (1 pixel = 1 dimension)
+         return featureFunctions.getPixels(paths, 20);
+      }
+   }
    //{name:"Path Count",function:featureFunctions.getPathCount},
    //{name:"Point Count",function:featureFunctions.getPointCount},
-   { name: "Width", function: featureFunctions.getWidth },
+   /*{ name: "Width", function: featureFunctions.getWidth },
    { name: "Height", function: featureFunctions.getHeight },
    { name: "Elongation", function: featureFunctions.getElongation },
    { name: "Roundness", function: featureFunctions.getRoundness },
-   { name: "Complexity", function: featureFunctions.getComplexity },
+   { name: "Complexity", function: featureFunctions.getComplexity },*/
 ];
 
 if (typeof module !== "undefined") {
