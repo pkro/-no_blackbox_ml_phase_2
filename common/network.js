@@ -52,7 +52,12 @@ class Level {
                 sum += level.inputs[j] * level.weights[j][i];
             }
 
-            level.outputs[i] = sum + level.biases[i];
+            // activation
+            // relu = max between 0 and biases
+            // level.outputs[i] = Math.max(0, sum + level.biases[i]);
+
+            // tanh = hyperbolic tangent
+            level.outputs[i] = Math.tanh(sum + level.biases[i]);
         }
 
         return level.outputs;

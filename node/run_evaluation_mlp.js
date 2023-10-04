@@ -25,7 +25,7 @@ if (fs.existsSync(constants.MODEL)) {
     mlp.load(JSON.parse(fs.readFileSync(constants.MODEL)));
 }
 
-mlp.fit(trainingSamples, 5000);
+mlp.fit(trainingSamples);
 
 // save best model
 fs.writeFileSync(constants.MODEL, JSON.stringify(mlp));
